@@ -18,6 +18,9 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-prom-bundle": "^6.0.0",
+    "prom-client": "^12.0.0",
+    "winston": "^3.2.1"
   }
 }
