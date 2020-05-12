@@ -35,3 +35,9 @@ The project is unit-test-enabled, using `jest` & `supertest` as test frameworks.
    oc apply -f activity1/openshift/deployment.yaml
    oc apply -f activity1/openshift/service.yaml
    ```
+
+5. Observe what happened. Explain the following:
+
+   1. What image are we using for the new deployment? Where is it coming from?
+   2. What port are the associated pods listening on?
+   3. What port is the details service listening on?
