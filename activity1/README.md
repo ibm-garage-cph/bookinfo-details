@@ -7,9 +7,11 @@ Prerequisites, before starting the exercise:
 
 Which means that your starting point should be an istio-enabled openshift cluster, where you have created a project named `bookinfo-<your initials>` and you have deployed the bookinfo microservices into it.
 
-At this stage we have a basic node.js server, running with express.
+At this stage introduce a basic node.js server, running with express.
 
 The project is unit-test-enabled, using `jest` & `supertest` as test frameworks.
+
+The project also contains the artifacts neccessary for you to deploy it to your bookinfo project on the openshift cluster
 
 ## Instructions
 
