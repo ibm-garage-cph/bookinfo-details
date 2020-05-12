@@ -1,0 +1,23 @@
+{
+  "name": "bookinfo-details",
+  "version": "1.0.0",
+  "description": "A nodejs implementation of the bookinfo details service",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest --watch",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibm-garage-cph/bookinfo-details.git"
+  },
+  "author": "Mihai Nueleanu",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.0.1",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
