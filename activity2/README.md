@@ -23,7 +23,9 @@ const client = require('prom-client');
 const collectDefaultMetrics = client.collectDefaultMetrics;
 ```
 
-In our exercise, beside default set of metrics related to Node.js runtime, we will also collect histogram metric `http_request_duration_seconds` which allow to calculate all RED method metrics. A histogram provides a statistical breakdown of possible results of an event using a set of buckets. For each request, we will monitor the response time and assign the result to a corresponding histogram bucket. Due to the asynchronous nature of Node.js, it can be tricky deciding where to place instrumentation logic to start or stop the application response timers required by a histogram. Luckily, when you use the Express framework for Node.js web apps, `express-prom-bundle` dramatically simplifies this process. Internally, `express-prom-bundle` uses `prom-client`.
+In our exercise, beside default set of metrics related to Node.js runtime, we will also collect histogram metric `http_request_duration_seconds` which allow to calculate all RED method metrics. A histogram provides a statistical breakdown of possible results of an event using a set of buckets. For each request, we will monitor the response time and increment the counter of a corresponding histogram bucket. 
+
+Due to the asynchronous nature of Node.js, it can be tricky deciding where to place instrumentation logic to start or stop the application response timers required by a histogram. Luckily, when you use the Express framework for Node.js web apps, `express-prom-bundle` dramatically simplifies this process. Internally, `express-prom-bundle` uses `prom-client`.
 
 You can install this library for your use with this command: `npm install express-prom-bundle prom-client --save`
 
