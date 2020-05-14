@@ -117,3 +117,8 @@ spec:
     - port: <Port>
       targetPort: <Target Port>
 ```
+
+### Hints
+
+- .dockerignore - a file which blacklists files from being considered (copied, executed, etc) by a Dockerfile at build-time
+- package.json - contains the nodejs dependancies and scripts; it's the entry-point to the app in a sense
