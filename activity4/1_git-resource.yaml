@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: git-bookinfo-details
+spec:
+  type: git
+  params:
+    - name: url
+      value: https://github.com/ibm-garage-cph/bookinfo-details.git
+    - name: revision
+      value: master

@@ -1,0 +1,39 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: build-node
+spec:
+  inputs:
+    resources:
+      - name: git-bookinfo-details
+        targetPath: /
+        type: git
+  steps:
+    - name: install
+      image: node
+      workingDir: "/workspace/activity1"
+      command: ["/bin/bash"]
+      args:
+        - -c
+        - |
+          echo 'Installing dependencies...'
+          ls -la 
+          pwd
+          npm install
+    - name: test
+      image: node
+      workingDir: "/workspace/activity1"
+      command: ["/bin/bash"]
+      args:
+        - -c
+        - |
+          echo 'Testing...'
+          npm run test
+    - name: build
+      image: node
+      workingDir: "/workspace/activity1"
+      command: ["/bin/bash"]
+      args:
+        - -c
+        - |
+          echo 'Building...'

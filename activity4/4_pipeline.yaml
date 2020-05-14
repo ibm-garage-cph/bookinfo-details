@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: app-deploy
+spec:
+  workspaces:
+    - name: shared-workspace
+      description: “Clone repository into workspace”
+  tasks:
+    - name: clone-app-source
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: shared-workspace
+          workspace: shared-workspace
+      params:
+        - name: url
+          value: https://github.com/tekton/pipeline.git
+    - name: clone-app-source
+      taskRef:
+        name: build-node
+      workspaces:
+        - name: shared-workspace
+          workspace: shared-workspace

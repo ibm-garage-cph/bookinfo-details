@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  generateName: build-node-run-
+spec:
+  taskRef:
+    name: build-node
+  inputs:
+    resources:
+      - name: git-bookinfo-details
+        resourceRef:
+          name: git-bookinfo-details
