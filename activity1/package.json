@@ -4,6 +4,7 @@
   "description": "A nodejs implementation of the bookinfo details service",
   "main": "server.js",
   "scripts": {
+    "test:ci": "jest",
     "test": "jest --watch",
     "start": "node src/server.js"
   },
