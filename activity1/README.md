@@ -13,33 +13,107 @@ The project is unit-test-enabled, using `jest` & `supertest` as test frameworks.
 
 The project also contains the artifacts neccessary for you to deploy it to your bookinfo project on the openshift cluster
 
-## Instructions
+## Problem
 
-1. Start by opening a terminal in a workspace directory of your choosing (*for example, on windows - C:\ibm-garage but it can be anything you'd like*)
+You have been tasked with the containerisation of this brand-new service. What we expect is for you to:
 
-2. Clone the current repository into this new workspace directory
+1. Build an image for this codebase. This involves creating a `Dockerfile` in which you `COPY` the necessary source code. As well, you must ensure to install the node.js dependancies that the service requires on run-time.
+2. `Push` the resulting image to dockerhub with the following name and tag: your-account/details:1
+3. Deliver the new image to your openshift namespace, by using a `Deployment` resource
+4. Expose the new deployment as a `Service`
 
-    ```bash
-    git clone https://github.com/ibm-garage-cph/bookinfo-details
-    ```
+## Reference
 
-3. In the same terminal, navigate to the directory `bookinfo-details`
+### Node.js
 
-    ```bash
-    cd bookinfo-details
-    ```
+```bash
+# Install dependancies
+npm install
 
-4. Apply the new deployment and the associated service to your namespace
+# Start application
+npm start
+```
 
-   ```bash
-   oc project bookinfo-mn
+### Dockerfile
 
-   oc apply -f activity1/openshift/deployment.yaml
-   oc apply -f activity1/openshift/service.yaml
-   ```
+```Dockerfile
+# Source image - starting point
+FROM node:12
 
-5. Observe what happened. Explain the following:
+# Sets the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD command
+WORKDIR /app
 
-   1. What image are we using for the new deployment? Where is it coming from?
-   2. What port are the associated pods listening on?
-   3. What port is the details service listening on?
+# Copy files from dockerfile location disk to image
+COPY source-filename.json destination-filename.json
+COPY /example/src/folder /example/destination/folder
+
+# Run scripts inside the image on build-time
+RUN npm install
+
+# Command executed on container run time
+CMD npm start
+```
+
+### Docker cli
+
+```bash
+# Build image with a tag
+docker build --tag tagname:1.0.0 .
+
+# Run container interactively
+docker run -it tagname:1.0.0
+
+# Run container detached
+docker run -d tagname:1.0.0
+
+# Stop container
+docker stop tagname:1.0.0
+
+# List containers
+docker ps
+
+# List local images
+docker images
+```
+
+### Deployment resource
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: myapp
+          image: <Image>
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: <Port>
+```
+
+### Service resource
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+spec:
+  selector:
+    app: myapp
+  ports:
+    - port: <Port>
+      targetPort: <Target Port>
+```
