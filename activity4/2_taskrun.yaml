@@ -7,6 +7,9 @@ spec:
     name: build-node
   inputs:
     resources:
-      - name: git-bookinfo-details
+      - name: git
         resourceRef:
           name: git-bookinfo-details
+      - name: image
+        resourceRef:
+          name: dockerhub-bookinfo-details
