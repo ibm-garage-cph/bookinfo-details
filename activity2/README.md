@@ -81,22 +81,59 @@ When specifying a logging level for a particular transport, anything at that lev
 
 1. Start by opening a terminal in a workspace directory of your choosing (*for example, on windows - C:\ibm-garage but it can be anything you'd like*)
 
-2. In the same terminal, navigate to the directory `bookinfo-details`
+2. In the same terminal, navigate to the directory `bookinfo-details/activity2`
 
-    ```bash
-    cd bookinfo-details/activity2
-    ```
+3. Review the changes in `src/app.js`. Identify the code related to metrics and logging. Note we added simulated errors and small random delay to each request. 
+4. (Optional) If you have local installation of Docker on your workstation, try to build the docker image for our `bookinfo-details` microservice. Review the contents of the `Dockerfile` needed to build the image. Run the following command to build the image:
+   ```sh
+   cd bookinfo-details/activity2
+   docker build -t bookinfo-details:1.0 .
+   ```
+   After it completes list the local docker images:
+   ```
+   docker images
+   ```
+   It should list the image you have just built.
+   Run the docker container locally in order to test if it works correctly:
 
-3. Review the changes in `src/app.js`. Identify the code related to metrics and logging.
- 
-4. Re-deploy the deployment to your namespace
+   ```
+   docker run -d -p 3000:3000 --name bookinfo-details bookinfo-details:1.0
+   ```
+   Use curl or web browser and test microservice URLs:
+   - `http://localhost:3000`
+   - `http://localhost:3000/metrics`
+
+5. Review the changes to `openshift/deployment.yaml` and `openshift/service.yaml`. I
+
+**Changes to `openshift/deployment.yaml`**  
+   The following config has been added in the `spec.template.spec.containers` section:
+
+   ```yaml
+             env:
+             - name: LOG_LEVEL
+               value: "debug"
+   ```
+   This is an environment variable definition that specifies the logging level for `bookinfo` microservice. You can change it anytime in order to set the desired logging level.
+   We changed also the container image name to the one we previously uploaded to Docker Hub.
+
+   **Changes to `openshift/service.yaml`**
+   The following config has been added in the `metadata:` section:
+
+   ```yaml
+     labels:
+       name: app-metrics-label
+   ```
+   This label will be used by Prometheus to automatically add the `bookinfo-details` microservice to the scope of monitoring.
+
+6. Re-deploy the deployment to your namespace
 
    ```bash
-   oc project bookinfo-mn
+   oc project bookinfo-mn/activity2
 
-   oc apply -f activity2/openshift/deployment.yaml
+   oc apply -f openshift/deployment.yaml
+   oc apply -f openshift/service.yaml
    ```
-5. Temporarily create an external route to the bookinfo-details service in order to verify that metrics are properly exposed.
+7. Temporarily create an external route to the bookinfo-details service in order to verify that metrics are properly exposed.
 
     ```sh
     oc expose svc details
@@ -107,70 +144,103 @@ When specifying a logging level for a particular transport, anything at that lev
     Access the `http://<route_host>/metrics`
     and verify if the output is similar to:
 
-```
-# HELP process_cpu_user_seconds_total Total user CPU time spent in seconds.
-# TYPE process_cpu_user_seconds_total counter
-process_cpu_user_seconds_total 126.29242099999999
+   ```
+   # HELP process_cpu_user_seconds_total Total user CPU time spent in seconds.
+   # TYPE process_cpu_user_seconds_total counter
+   process_cpu_user_seconds_total 126.29242099999999
 
-# HELP process_cpu_system_seconds_total Total system CPU time spent in seconds.
-# TYPE process_cpu_system_seconds_total counter
-process_cpu_system_seconds_total 146.13573399999999
+   # HELP process_cpu_system_seconds_total Total system CPU time spent in seconds.
+   # TYPE process_cpu_system_seconds_total counter
+   process_cpu_system_seconds_total 146.13573399999999
 
-(...)
+   (...)
 
 
-# HELP http_request_duration_seconds duration histogram of http responses labeled with: status_code, method, path
-# TYPE http_request_duration_seconds histogram
-http_request_duration_seconds_bucket{le="0.003",status_code="200",method="GET",path="/"} 6
-http_request_duration_seconds_bucket{le="0.03",status_code="200",method="GET",path="/"} 7
-http_request_duration_seconds_bucket{le="0.1",status_code="200",method="GET",path="/"} 7
-http_request_duration_seconds_bucket{le="0.3",status_code="200",method="GET",path="/"} 7
-http_request_duration_seconds_bucket{le="1.5",status_code="200",method="GET",path="/"} 7
-http_request_duration_seconds_bucket{le="10",status_code="200",method="GET",path="/"} 7
-http_request_duration_seconds_bucket{le="+Inf",status_code="200",method="GET",path="/"} 7
-http_request_duration_seconds_sum{status_code="200",method="GET",path="/"} 0.025610142000000002
-http_request_duration_seconds_count{status_code="200",method="GET",path="/"} 7
-http_request_duration_seconds_bucket{le="0.003",status_code="404",method="GET",path="/favicon.ico"} 0
-http_request_duration_seconds_bucket{le="0.03",status_code="404",method="GET",path="/favicon.ico"} 1
-http_request_duration_seconds_bucket{le="0.1",status_code="404",method="GET",path="/favicon.ico"} 1
-http_request_duration_seconds_bucket{le="0.3",status_code="404",method="GET",path="/favicon.ico"} 1
-http_request_duration_seconds_bucket{le="1.5",status_code="404",method="GET",path="/favicon.ico"} 1
-http_request_duration_seconds_bucket{le="10",status_code="404",method="GET",path="/favicon.ico"} 1
-http_request_duration_seconds_bucket{le="+Inf",status_code="404",method="GET",path="/favicon.ico"} 1
-http_request_duration_seconds_sum{status_code="404",method="GET",path="/favicon.ico"} 0.003525823
-http_request_duration_seconds_count{status_code="404",method="GET",path="/favicon.ico"} 1
-http_request_duration_seconds_bucket{le="0.003",status_code="304",method="GET",path="/"} 39
-http_request_duration_seconds_bucket{le="0.03",status_code="304",method="GET",path="/"} 44
-http_request_duration_seconds_bucket{le="0.1",status_code="304",method="GET",path="/"} 44
-http_request_duration_seconds_bucket{le="0.3",status_code="304",method="GET",path="/"} 44
-http_request_duration_seconds_bucket{le="1.5",status_code="304",method="GET",path="/"} 44
-http_request_duration_seconds_bucket{le="10",status_code="304",method="GET",path="/"} 44
-http_request_duration_seconds_bucket{le="+Inf",status_code="304",method="GET",path="/"} 44
-http_request_duration_seconds_sum{status_code="304",method="GET",path="/"} 0.107069568
-http_request_duration_seconds_count{status_code="304",method="GET",path="/"} 44
+   # HELP http_request_duration_seconds duration histogram of http responses labeled with: status_code, method, path
+   # TYPE http_request_duration_seconds histogram
+   http_request_duration_seconds_bucket{le="0.003",status_code="200",method="GET",path="/"} 6
+   http_request_duration_seconds_bucket{le="0.03",status_code="200",method="GET",path="/"} 7
+   http_request_duration_seconds_bucket{le="0.1",status_code="200",method="GET",path="/"} 7
+   http_request_duration_seconds_bucket{le="0.3",status_code="200",method="GET",path="/"} 7
+   http_request_duration_seconds_bucket{le="1.5",status_code="200",method="GET",path="/"} 7
+   http_request_duration_seconds_bucket{le="10",status_code="200",method="GET",path="/"} 7
+   http_request_duration_seconds_bucket{le="+Inf",status_code="200",method="GET",path="/"} 7
+   http_request_duration_seconds_sum{status_code="200",method="GET",path="/"} 0.025610142000000002
+   http_request_duration_seconds_count{status_code="200",method="GET",path="/"} 7
+   http_request_duration_seconds_bucket{le="0.003",status_code="404",method="GET",path="/favicon.ico"} 0
+   http_request_duration_seconds_bucket{le="0.03",status_code="404",method="GET",path="/favicon.ico"} 1
+   http_request_duration_seconds_bucket{le="0.1",status_code="404",method="GET",path="/favicon.ico"} 1
+   http_request_duration_seconds_bucket{le="0.3",status_code="404",method="GET",path="/favicon.ico"} 1
+   http_request_duration_seconds_bucket{le="1.5",status_code="404",method="GET",path="/favicon.ico"} 1
+   http_request_duration_seconds_bucket{le="10",status_code="404",method="GET",path="/favicon.ico"} 1
+   http_request_duration_seconds_bucket{le="+Inf",status_code="404",method="GET",path="/favicon.ico"} 1
+   http_request_duration_seconds_sum{status_code="404",method="GET",path="/favicon.ico"} 0.003525823
+   http_request_duration_seconds_count{status_code="404",method="GET",path="/favicon.ico"} 1
+   http_request_duration_seconds_bucket{le="0.003",status_code="304",method="GET",path="/"} 39
+   http_request_duration_seconds_bucket{le="0.03",status_code="304",method="GET",path="/"} 44
+   http_request_duration_seconds_bucket{le="0.1",status_code="304",method="GET",path="/"} 44
+   http_request_duration_seconds_bucket{le="0.3",status_code="304",method="GET",path="/"} 44
+   http_request_duration_seconds_bucket{le="1.5",status_code="304",method="GET",path="/"} 44
+   http_request_duration_seconds_bucket{le="10",status_code="304",method="GET",path="/"} 44
+   http_request_duration_seconds_bucket{le="+Inf",status_code="304",method="GET",path="/"} 44
+   http_request_duration_seconds_sum{status_code="304",method="GET",path="/"} 0.107069568
+   http_request_duration_seconds_count{status_code="304",method="GET",path="/"} 44
 
-# HELP up 1 = up, 0 = not up
-# TYPE up gauge
-up 1
-```
+   # HELP up 1 = up, 0 = not up
+   # TYPE up gauge
+   up 1
+   ```
 
-6. View logs generated by the `bookinfo-details` app.
-   - Collect the pod name with `oc get pod`
-   - View logs using `oc logs <pod_name>`
+8. View logs generated by the `bookinfo-details` app.
+   
+  - Collect the pod name with `oc get pod`
+  - View logs using `oc logs <pod_name>`
    The output should be similar to:
-```
-> bookinfo-details@1.0.0 start /app
-> node src/server.js
+  ```
+  > bookinfo-details@1.0.0 start /app
+  > node src/server.js
 
-Details service has started on port 3000
-{"errCode":"DET00001I","level":"info","message":"Hello World!","timestamp":"2020-05-12T16:39:23.246Z"}
-{"errCode":"DET00001I","level":"info","message":"Hello World!","timestamp":"2020-05-12T16:39:27.275Z"}
-{"errCode":"DET00001I","level":"info","message":"Hello World!","timestamp":"2020-05-12T16:39:28.120Z"}
-{"errCode":"DET00001I","level":"info","message":"Hello World!","timestamp":"2020-05-12T16:39:28.591Z"}
-```
+  Details service has started on port 3000
+  {"errCode":"DET00001I","level":"info","message":"Hello World!","timestamp":"2020-05-12T16:39:23.246Z"}
+  {"errCode":"DET00001I","level":"info","message":"Hello World!","timestamp":"2020-05-12T16:39:27.275Z"}
+  {"errCode":"DET00001I","level":"info","message":"Hello World!","timestamp":"2020-05-12T16:39:28.120Z"}
+  {"errCode":"DET00001I","level":"info","message":"Hello World!","timestamp":"2020-05-12T16:39:28.591Z"}
+  ```
 
 ## View results in Prometheus and Grafana
 
+Prometheus and Grafana stack has been pre-configured on our ROKS cluster. It should automatically detect your instrumented `bookinfo-details` microservice.
+Collect the Grafana URL using command:
+```
+$ echo https://`oc get route grafana-route -o jsonpath={.spec.host} -n app-monitoring-1`
+
+https://grafana-route-app-monitoring-1.roks-bootcamp-194290-7cb1e9f279ecbad5dd278bca741c81b3-0000.eu-de.containers.appdomain.cloud
+```
+Open the "NodeJS Application Dashboard". It is based on default set of metics collect for Node.js runtime by Prometheus client library
+
+![](images/2020-05-15-14-42-57.png)
+
+Another dashboard "Application Metrics - Golden Signals" visualize Request Rate, Error Rate and Request Duration in percentiles.
+
+![](images/2020-05-15-15-42-29.png)
+
+Generate load for the `bookinfo-details` and observe results on the dashboard.
+
 ## View results in Sysdig
 
+Open Sysdig Console `https://cloud.ibm.com/observe/monitoring` and click `View Sysdig`
+Click on the `Explore` icon on the task bar and select `Services`. Expand the cluster branch and locate your namespace `bookinfo-xxx` and the from the dropdown list above the charts select `Default dashboards -> Services -> Kubernetes Service Golden Signals`. See the screenshot below for additional guidance how to find this dashboard.
+
+![](images/2020-05-15-16-11-06.png)
+
 ## View results in LogDNA
+
+Open LogDNA Console `https://cloud.ibm.com/observe/logging` and and click `View LogDNA`
+
+Type the following search query in order to view all logs coming from resources located in your namespace: `namespace:bookinfo-xxx`
+
+![](images/2020-05-15-16-29-44.png)
+
+Try to create a similar dashboard showing the message count in time as on the screenshot below:
+
+![](images/2020-05-15-16-40-33.png)
