@@ -1,0 +1,29 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: test-nodejs
+spec:
+  inputs:
+    resources:
+      - name: git
+        type: git
+        targetPath: /
+  steps:
+    - name: install
+      image: node
+      workingDir: "/workspace/activity1"
+      command: ["/bin/bash"]
+      args:
+        - -c
+        - |
+          echo 'Installing dependencies...'
+          npm install
+    - name: test
+      image: node
+      workingDir: "/workspace/activity1"
+      command: ["/bin/bash"]
+      args:
+        - -c
+        - |
+          echo 'Unit Testing...'
+          npm run test:ci

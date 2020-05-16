@@ -1,13 +1,13 @@
 apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
-  name: build-node
+  name: build-push-nodejs
 spec:
   inputs:
     resources:
       - name: git
-        targetPath: /
         type: git
+        targetPath: /
       - name: image
         type: image
     params:
@@ -24,26 +24,6 @@ spec:
         description: Verify the TLS on the registry endpoint (for push/pull to a non-TLS registry)
         default: "true"
   steps:
-    - name: install
-      image: node
-      workingDir: "/workspace/activity1"
-      command: ["/bin/bash"]
-      args:
-        - -c
-        - |
-          echo 'Installing dependencies...'
-          ls -la 
-          pwd
-          npm install
-    - name: test
-      image: node
-      workingDir: "/workspace/activity1"
-      command: ["/bin/bash"]
-      args:
-        - -c
-        - |
-          echo 'Testing...'
-          npm run test:ci
     - name: build
       image: $(inputs.params.BUILDER_IMAGE)
       workingDir: /workspace
@@ -57,7 +37,10 @@ spec:
           echo "SHORT_GIT_HASH = $SHORT_GIT_HASH"
           cd ./activity1
           echo "Building Image $NEW_IMAGE_ID"
-          buildah bud --tls-verify="$(inputs.params.TLSVERIFY)" --layers -f "$(inputs.params.DOCKERFILE)" -t "$NEW_IMAGE_ID" "$(inputs.params.CONTEXT)"
+          buildah bud --tls-verify="$(inputs.params.TLSVERIFY)" \
+                      --layers -f "$(inputs.params.DOCKERFILE)" \
+                      -t "$NEW_IMAGE_ID" \
+                      "$(inputs.params.CONTEXT)"
           echo "Pushing Image $NEW_IMAGE_ID"
           buildah push --tls-verify="$(inputs.params.TLSVERIFY)" "$NEW_IMAGE_ID" "docker://$NEW_IMAGE_ID"
           echo "NEW_IMAGE_ID=$NEW_IMAGE_ID" >> /workspace/env-config

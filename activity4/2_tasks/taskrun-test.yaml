@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  generateName: test-nodejs-run-
+spec:
+  taskRef:
+    name: test-nodejs
+  inputs:
+    resources:
+      - name: git
+        resourceRef:
+          name: git-bookinfo-details

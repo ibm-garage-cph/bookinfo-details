@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  generateName: pipeline-details-service-run-
+spec:
+  serviceAccountName: pipeline
+  pipelineRef:
+    name: pipeline-details-service
+  resources:
+    - name: git
+      resourceRef:
+        name: git-bookinfo-details
+    - name: image
+      resourceRef:
+        name: dockerhub-bookinfo-details

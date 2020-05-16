@@ -1,0 +1,28 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: pipeline-details-service
+spec:
+  resources:
+    - name: git
+      type: git
+    - name: image
+      type: image
+  tasks:
+    - name: test
+      taskRef:
+        name: test-nodejs
+      resources:
+        inputs:
+          - name: git
+            resource: git
+    - name: build-push
+      taskRef:
+        name: build-push-nodejs
+      runAfter: [test]
+      resources:
+        inputs:
+          - name: git
+            resource: git
+          - name: image
+            resource: image

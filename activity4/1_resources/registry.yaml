@@ -7,10 +7,3 @@ spec:
   params:
     - name: url
       value: index.docker.io/ibmgaragecph/bookinfo
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: pipeline
-secrets:
-  - name: dockerhub
