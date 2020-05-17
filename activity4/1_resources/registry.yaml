@@ -6,4 +6,4 @@ spec:
   type: image
   params:
     - name: url
-      value: index.docker.io/ibmgaragecph/bookinfo
+      value: index.docker.io/your-dockerhub-username/bookinfo

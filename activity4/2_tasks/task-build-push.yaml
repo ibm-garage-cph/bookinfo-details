@@ -23,6 +23,10 @@ spec:
       - name: TLSVERIFY
         description: Verify the TLS on the registry endpoint (for push/pull to a non-TLS registry)
         default: "true"
+        params:
+      - name: TARGET_DIRECTORY
+        description: The subdirectory in which you want to execute the steps
+        default: activity1
   steps:
     - name: build
       image: $(inputs.params.BUILDER_IMAGE)
@@ -35,7 +39,8 @@ spec:
           SHORT_GIT_HASH="$(cat .git/FETCH_HEAD | awk '{print substr($1,0,7)}')"
           NEW_IMAGE_ID="$(inputs.resources.image.url):$SHORT_GIT_HASH"
           echo "SHORT_GIT_HASH = $SHORT_GIT_HASH"
-          cd ./activity1
+          cd ./$(inputs.params.TARGET_DIRECTORY)
+
           echo "Building Image $NEW_IMAGE_ID"
           buildah bud --tls-verify="$(inputs.params.TLSVERIFY)" \
                       --layers -f "$(inputs.params.DOCKERFILE)" \

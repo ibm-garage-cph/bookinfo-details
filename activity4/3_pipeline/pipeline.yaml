@@ -16,6 +16,9 @@ spec:
         inputs:
           - name: git
             resource: git
+      params:
+        - name: TARGET_DIRECTORY
+          value: "activity1"
     - name: build-push
       taskRef:
         name: build-push-nodejs
@@ -26,3 +29,6 @@ spec:
             resource: git
           - name: image
             resource: image
+      params:
+        - name: TARGET_DIRECTORY
+          value: "activity1"

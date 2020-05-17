@@ -8,10 +8,14 @@ spec:
       - name: git
         type: git
         targetPath: /
+    params:
+      - name: TARGET_DIRECTORY
+        description: The subdirectory in which you want to execute the steps
+        default: activity1
   steps:
     - name: install
       image: node
-      workingDir: "/workspace/activity1"
+      workingDir: "/workspace/$(inputs.params.TARGET_DIRECTORY)"
       command: ["/bin/bash"]
       args:
         - -c
@@ -20,7 +24,7 @@ spec:
           npm install
     - name: test
       image: node
-      workingDir: "/workspace/activity1"
+      workingDir: "/workspace/$(inputs.params.TARGET_DIRECTORY)"
       command: ["/bin/bash"]
       args:
         - -c
