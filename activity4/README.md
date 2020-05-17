@@ -41,7 +41,7 @@ You have been tasked with automating the build and release of the new details se
 5. Create a `PipelineRun` instance in order to trigger the newly creted pipeline
 
     ```bash
-   oc apply -f 3_pipeline/pipelinerun.yaml
+   oc create -f 3_pipeline/pipelinerun.yaml
    ```
 
    *Observe: the `pipelinerun.yaml` contains the reference to the previously created resources: service account, git repository, container registry*
