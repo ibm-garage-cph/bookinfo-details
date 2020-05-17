@@ -11,11 +11,11 @@ You have been tasked with automating the build and release of the new details se
 1. Create a new project on the cluster named `tekton-<your initials>`
 
 2. Apply the `PipelineResources` which you can find in the directory named `1_resources`
-   1. Create a secret with the command found in `secret.sh`. This secret will contain your dockerhub credentials (username, password/apikey, server url, etc). Make sure to replace the credentials listed in the `secret.sh` file before executing it
+   - Create a secret with the command found in `secret.sh`. This secret will contain your dockerhub credentials (username, password/apikey, server url, etc). Make sure to replace the credentials listed in the `secret.sh` file before executing it
 
-   2. Modify the `registry.yaml` file to include your docker username
+   - Modify the `registry.yaml` file to include your docker username
 
-   3. Apply the resources on by one
+   - Apply the resources on by one
 
    ```bash
    oc apply -f 1_resources/git.yaml
@@ -47,6 +47,10 @@ You have been tasked with automating the build and release of the new details se
    *Observe: the `pipelinerun.yaml` contains the reference to the previously created resources: service account, git repository, container registry*
 
 6. Follow the progress of your pipeline using the tekton cli or the Openshift web console
+
+7. If the pipeline is successful, check your dockerhub account to see that the image is there
+
+8. Update the bookinfo deployment (from previous activities) to point to the new image
 
 ## Reference
 
