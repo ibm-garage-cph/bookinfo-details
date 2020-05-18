@@ -74,6 +74,11 @@ docker ps
 
 # List local images
 docker images
+
+# Login to ibm container registry
+ibmcloud login 
+ibmcloud cr region-set eu-central
+ibmcloud cr login
 ```
 
 ### Deployment resource
