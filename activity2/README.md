@@ -103,9 +103,9 @@ When specifying a logging level for a particular transport, anything at that lev
    - `http://localhost:3000`
    - `http://localhost:3000/metrics`
 
-5. Review the changes to `openshift/deployment.yaml` and `openshift/service.yaml`. I
+5. Review the changes to `openshift/deployment.yaml` and `openshift/service.yaml`.
 
-**Changes to `openshift/deployment.yaml`**  
+  **Changes to `openshift/deployment.yaml`**  
    The following config has been added in the `spec.template.spec.containers` section:
 
    ```yaml
