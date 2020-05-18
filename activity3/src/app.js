@@ -16,6 +16,8 @@ const metricsMiddleware = promBundle({
 });
 
 var logLevel = process.env.LOG_LEVEL || 'info';
+var health = true;
+var ready =true;
 
 const logger = createLogger({
     level: logLevel,
@@ -42,6 +44,30 @@ app.get("/", (req, res) => {
     res.sendStatus(500)
     logger.error("Informative error message", {"msgid": "DET00001E"})
   }
+})
+
+app.get('/health', (req, res, next) => {
+  if(health) {
+   res.send({ status: 'Healthy'})
+   next()
+ } else {
+  res.status(500).send({status: 'Health check did not pass'});
+ }
+})
+
+app.get('/ready', (req, res, next) => {
+  if(ready) {
+   res.send({ status: 'Ready'})
+   next()
+ } else {
+  res.status(500).send({status: 'Readiness check did not pass'});
+ }
+})
+
+app.get('/simulate-problem', (req, res, next) => {
+  health = false
+  res.json({ status: 'Health variable set to \'false\'. This should activate the liveness probe'})
+  next()
 })
 
 function errorSource() {
