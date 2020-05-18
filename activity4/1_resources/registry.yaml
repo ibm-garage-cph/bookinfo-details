@@ -6,4 +6,5 @@ spec:
   type: image
   params:
     - name: url
-      value: index.docker.io/your-dockerhub-username/bookinfo
+      value: de.icr.io/kmddk/<your-repository>
+      # <your-repository> -> e.g. mn-bookinfo
