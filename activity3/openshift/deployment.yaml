@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: details-nodejs
-        image: rszypulka/bookinfo-details-v2:2.0
+        image: <IMAGE_NAME>
         ports:
           - containerPort: 3000
         env:
