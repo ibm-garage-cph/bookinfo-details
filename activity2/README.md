@@ -113,7 +113,6 @@ Example run:
    docker push de.icr.io/<namespace>/<id>-bookinfo-details-v2:1.0
    ```
 
-   
 
 6. Review the changes to `openshift/deployment.yaml` and `openshift/service.yaml`.
 
@@ -145,7 +144,7 @@ Example run:
    oc apply -f openshift/deployment.yaml
    oc apply -f openshift/service.yaml
    ```
-8. Temporarily create an external route to the bookinfo-details-v2 service in order to verify that metrics are properly exposed.
+8. Temporarily create an external route to the bookinfo-details-v2 service in order to verify that metrics are properly exposed. (Or do a port-forwarding, but remember to cleanup the route if created :-) )
 
     ```sh
     oc expose svc details-v2
