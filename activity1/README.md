@@ -18,7 +18,7 @@ The project also contains the artifacts neccessary for you to deploy it to your 
 You have been tasked with the containerisation of this brand-new service. What we expect is for you to:
 
 1. Build an image for this codebase. This involves creating a `Dockerfile` in which you `COPY` the necessary source code. As well, you must ensure to install the node.js dependancies that the service requires on run-time.
-2. `Push` the resulting image to dockerhub with the following name and tag: your-account/details:1
+2. `Push` the resulting image to dockerhub or IBM container resgitry with the following name and tag: your-account/details:1
 3. Deliver the new image to your openshift namespace, by using a `Deployment` resource
 4. Expose the new deployment as a `Service`
 
@@ -62,6 +62,9 @@ docker build --tag tagname:1.0.0 .
 
 # Run container interactively
 docker run -it tagname:1.0.0
+
+# Run container interactively with ports exposed
+docker run -p xxxx:yyyy -it tagname:1.0.0
 
 # Run container detached
 docker run -d tagname:1.0.0
