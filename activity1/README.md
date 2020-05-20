@@ -67,7 +67,7 @@ docker run -it tagname:1.0.0
 docker run -p xxxx:yyyy -it tagname:1.0.0
 
 # Run container detached
-docker run -d tagname:1.0.0
+docker run -d -p 3000:3000 tagname:1.0.0
 
 # Stop container
 docker stop tagname:1.0.0
@@ -79,7 +79,7 @@ docker ps
 docker images
 
 # Login to ibm container registry
-ibmcloud login 
+ibmcloud login
 ibmcloud cr region-set eu-central
 ibmcloud cr login
 ```
