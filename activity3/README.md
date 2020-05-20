@@ -1,4 +1,4 @@
-In this exercise we will configure liveness and readiness probes for our `bookinfo-details` microservice.
+In this exercise we will configure liveness and readiness probes for our `bookinfo-details-v2` microservice.
 
 The [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) uses **liveness probes** to know when to restart a container. For example, liveness probes could catch a deadlock, where an application is running, but unable to make progress. Restarting a container in such a state can help to make the application more available despite bugs.
 
@@ -42,10 +42,10 @@ app.get('/bad-health', (req, res, next) => {
   next()
 })
 ```
-2.  (Optional) If you have local installation of Docker on your workstation, try to build the new docker image for our `bookinfo-details` microservice.
+2.  (Optional) If you have local installation of Docker on your workstation, try to build the new docker image for our `bookinfo-details-v2` microservice.
    ```sh
    cd bookinfo-details/activity3
-   docker build -t bookinfo-details:2.0 .
+   docker build -t bookinfo-details-v2:2.0 .
    ```
    After it completes list the local docker images:
    ```
@@ -55,7 +55,8 @@ app.get('/bad-health', (req, res, next) => {
    Run the docker container locally in order to test if it works correctly:
 
    ```
-   docker run -d -p 3000:3000 --name bookinfo-details bookinfo-details:2.0
+   # docker run -d -p 3000:3000 --name bookinfo-details bookinfo-details-v2:2.0
+   docker run -p 3000:3000 --name bookinfo-details bookinfo-details-v2:2.0
    ```
    Use curl or web browser and test microservice URLs:
    - `http://localhost:3000/health`
@@ -63,6 +64,14 @@ app.get('/bad-health', (req, res, next) => {
    
    Simulate the app health problem with `http://localhost:3000/simulate-problem`
    Check the `http://localhost:3000/health` again.
+
+ 2. + Push image to container registry
+ 
+   ```
+    docker tag  bookinfo-details-v2:2.0 de.icr.io/<namespace>/<id>-bookinfo-details-v2:2.0
+
+   docker push de.icr.io/<namespace>/<id>-bookinfo-details-v2:2.0
+   ```
 
  3. Review the contents of the `openshift/deployment.yml`. The YAML file fas been updated with definitions of the liveness and readiness probes:
    ```yml

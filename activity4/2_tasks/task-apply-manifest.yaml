@@ -1,0 +1,53 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: apply-manifests-task
+spec:
+  inputs:
+    resources:
+      - type: image
+        name: image
+      - name: git
+        type: git
+        targetPath: /
+    params:
+      - name: TARGET_DIRECTORY
+        description: The directory that is the root of information
+        type: string
+        default: "activity3"
+      - name: manifest_dir
+        description: The directory in source that contains yaml manifests
+        type: string
+        default: "openshift"
+      - name: namespace
+        description: The namespace in which the manifest files should be applied
+        type: string
+        default: "bookinfo"
+  steps:
+    - name: apply
+      image: quay.io/openshift/origin-cli:latest
+      workingDir: "/workspace/"
+      command: ["/bin/bash", "-c"]
+      args:
+        - |-
+          set -e
+          set -x
+          pwd
+          ls -al
+          SHORT_GIT_HASH=$(cat .git/FETCH_HEAD | awk '{print substr($1,0,7)}')
+          NEW_IMAGE=$(inputs.resources.image.url):$SHORT_GIT_HASH
+          echo Setting image to $NEW_IMAGE
+          cd ./$(inputs.params.TARGET_DIRECTORY)
+          echo -----------------------------------
+          echo Updaing manifests in $(inputs.params.manifest_dir) directory
+          sed -i "s|<IMAGE_NAME>|${NEW_IMAGE}|g" ./$(inputs.params.manifest_dir)/deployment.yaml
+          echo -----------------------------------
+          echo deployment.yaml
+          cat ./$(inputs.params.manifest_dir)/deployment.yaml
+          echo -----------------------------------
+          echo Get pods from $(inputs.params.namespace)
+          oc get pods -n $(inputs.params.namespace)
+          echo -----------------------------------
+          echo Applying manifests in $(inputs.params.manifest_dir) directory
+          oc apply -n  $(inputs.params.namespace) -f $(inputs.params.manifest_dir) 
+          echo -----------------------------------

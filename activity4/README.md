@@ -38,19 +38,31 @@ You have been tasked with automating the build and release of the new details se
    oc apply -f 3_pipeline/pipeline.yaml
    ```
 
-5. Create a `PipelineRun` instance in order to trigger the newly creted pipeline
+5. Ensure the pipeline service account in tekton-<id> can make changes in the namespace to work on bookinfo-<id>. Without this the manifest applies will fail.
+
+    ```bash
+   oc policy add-role-to-user edit system:serviceaccount:tekton-$INITIALS:pipeline -n bookinfo-$INITIALS
+    ```
+
+
+6. Create a `PipelineRun` instance in order to trigger the newly creted pipeline
 
     ```bash
    oc create -f 3_pipeline/pipelinerun.yaml
    ```
+   Alternatively use the tekton cli
+   ```bash
+   tkn pipeline start pipeline-details-service  -r git=git-bookinfo-details  -r image=dockerhub-bookinfo-details  -p  TARGET_DIRECTORY=activity3 -p NAMESPACE=bookinfo-jb
+   ```
 
    *Observe: the `pipelinerun.yaml` contains the reference to the previously created resources: service account, git repository, container registry*
 
-6. Follow the progress of your pipeline using the tekton cli or the Openshift web console
+7. Follow the progress of your pipeline using the tekton cli or the Openshift web console
 
-7. If the pipeline is successful, check your dockerhub account to see that the image is there
+8. If the pipeline is successful, check your dockerhub account to see that the image is there
 
-8. Update the bookinfo deployment (from previous activities) to point to the new image
+9. If the pipeline is successful, check your deployment of the bookinfo application 
+
 
 ## Reference
 
