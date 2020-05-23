@@ -4,7 +4,7 @@ export USERNAME='iamapikey'
 export PASSWORD='MUST REPLACE HERE: your IBM Cloud ApiKey'
 export EMAIL='iamapikey'
 
-oc create secret docker-registry dockerhub \
+oc create secret docker-registry regcred \
     --docker-server=$SERVER \
     --docker-username=$USERNAME \
     --docker-password=$PASSWORD \
