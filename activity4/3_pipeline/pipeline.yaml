@@ -9,12 +9,12 @@ spec:
     - name: image
       type: image
   params:
-  - name: TARGET_DIRECTORY
-    type: string
-    description: name of the directory with Dockerfile and package.json
-  - name: NAMESPACE
-    type: string
-    description: name of the clustyer namespace to apply mamnifests to
+    - name: TARGET_DIRECTORY
+      type: string
+      description: name of the directory with Dockerfile and package.json
+    - name: NAMESPACE
+      type: string
+      description: name of the clustyer namespace to apply mamnifests to
   tasks:
     - name: test
       taskRef:
