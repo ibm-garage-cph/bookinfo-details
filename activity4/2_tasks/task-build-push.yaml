@@ -25,7 +25,7 @@ spec:
         default: "true"
       - name: TARGET_DIRECTORY
         description: The subdirectory in which you want to execute the steps
-        default: activity1
+        default: .
   steps:
     - name: build
       image: $(inputs.params.BUILDER_IMAGE)
