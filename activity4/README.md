@@ -52,7 +52,7 @@ You have been tasked with automating the build and release of the new details se
    ```
    Alternatively use the tekton cli
    ```bash
-   tkn pipeline start pipeline-details-service  -r git=git-bookinfo-details  -r image=dockerhub-bookinfo-details  -p  TARGET_DIRECTORY=activity3 -p NAMESPACE=bookinfo-jb
+   tkn pipeline start pipeline-details-service  -r git=git-bookinfo-details  -r image=registry-bookinfo-details  -p  TARGET_DIRECTORY=activity3 -p NAMESPACE=bookinfo-jb
    ```
 
    *Observe: the `pipelinerun.yaml` contains the reference to the previously created resources: service account, git repository, container registry*

@@ -11,7 +11,7 @@ oc create secret docker-registry regcred \
     --docker-email=$EMAIL
 
 # or, with inline values:
-oc create secret docker-registry dockerhub \
+oc create secret docker-registry regcred \
     --docker-server='de.icr.io' \
     --docker-username='iamapikey' \
     --docker-password='MUST REPLACE HERE: your IBM Cloud ApiKey' \

@@ -12,4 +12,4 @@ spec:
           name: git-bookinfo-details
       - name: image
         resourceRef:
-          name: dockerhub-bookinfo-details
+          name: registry-bookinfo-details
