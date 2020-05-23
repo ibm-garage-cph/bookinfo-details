@@ -28,7 +28,7 @@ spec:
           value: "activity3"
     - name: build-push
       taskRef:
-        name: build-push-nodejs
+        name: build-push
       runAfter: [test]
       resources:
         inputs:

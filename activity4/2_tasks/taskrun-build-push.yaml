@@ -1,10 +1,10 @@
 apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
-  generateName: build-push-nodejs-run-
+  generateName: build-push-run-
 spec:
   taskRef:
-    name: build-push-nodejs
+    name: build-push
   inputs:
     resources:
       - name: git
