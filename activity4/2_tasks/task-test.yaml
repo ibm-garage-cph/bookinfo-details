@@ -30,4 +30,4 @@ spec:
         - -c
         - |
           echo 'Unit Testing...'
-          npm run test:ci
+          # npm run test:ci

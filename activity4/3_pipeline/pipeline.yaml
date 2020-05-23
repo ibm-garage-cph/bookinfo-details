@@ -8,6 +8,13 @@ spec:
       type: git
     - name: image
       type: image
+  params:
+  - name: TARGET_DIRECTORY
+    type: string
+    description: name of the directory with Dockerfile and package.json
+  - name: NAMESPACE
+    type: string
+    description: name of the clustyer namespace to apply mamnifests to
   tasks:
     - name: test
       taskRef:
@@ -18,7 +25,7 @@ spec:
             resource: git
       params:
         - name: TARGET_DIRECTORY
-          value: "activity1"
+          value: "activity3"
     - name: build-push
       taskRef:
         name: build-push-nodejs
@@ -31,4 +38,19 @@ spec:
             resource: image
       params:
         - name: TARGET_DIRECTORY
-          value: "activity1"
+          value: "activity3"
+    - name: apply-manifest
+      taskRef:
+        name: apply-manifests-task
+      runAfter: [build-push]
+      resources:
+        inputs:
+          - name: git
+            resource: git
+          - name: image
+            resource: image
+      params:
+        - name: TARGET_DIRECTORY
+          value: "activity3"
+        - name: namespace
+          value: $(params.NAMESPACE)
