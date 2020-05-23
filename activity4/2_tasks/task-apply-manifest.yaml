@@ -14,7 +14,7 @@ spec:
       - name: TARGET_DIRECTORY
         description: The directory that is the root of information
         type: string
-        default: "activity3"
+        default: "."
       - name: manifest_dir
         description: The directory in source that contains yaml manifests
         type: string
