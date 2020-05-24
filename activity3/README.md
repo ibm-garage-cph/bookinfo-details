@@ -36,9 +36,9 @@ app.get('/health', (req, res, next) => {
  }
 })
 
-app.get('/bad-health', (req, res, next) => {
+app.get('/simulate-problem', (req, res, next) => {
   health = false
-  res.json({ status: 'App health set to \'false\'. This should activate the liveness probe'})
+  res.json({ status: 'Health variable set to \'false\'. This should activate the liveness probe'})
   next()
 })
 ```
