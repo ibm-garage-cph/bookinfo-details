@@ -57,6 +57,11 @@ CMD npm start
 ### Docker cli
 
 ```bash
+# Login to ibm container registry
+ibmcloud login
+ibmcloud cr region-set eu-central
+ibmcloud cr login
+
 # Build image with a tag
 docker build --tag tagname:1.0.0 .
 
@@ -77,11 +82,6 @@ docker ps
 
 # List local images
 docker images
-
-# Login to ibm container registry
-ibmcloud login
-ibmcloud cr region-set eu-central
-ibmcloud cr login
 ```
 
 ### Deployment resource
