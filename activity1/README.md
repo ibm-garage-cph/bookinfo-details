@@ -4,6 +4,7 @@ Prerequisites, before starting the exercise:
 
 - [Exercise 3](https://github.com/ibm-garage-cph/istio-roks-101/tree/master/workshop/exercise-3)
 - [Exercise 4](https://github.com/ibm-garage-cph/istio-roks-101/tree/master/workshop/exercise-4)
+- [01-basis](https://github.com/ibm-garage-cph/devops-plan/tree/master/01-basis)
 
 Which means that your starting point should be an istio-enabled openshift cluster, where you have created a project named `bookinfo-<your initials>` and you have deployed the bookinfo microservices into it.
 
@@ -18,7 +19,7 @@ The project also contains the artifacts neccessary for you to deploy it to your 
 You have been tasked with the containerisation of this brand-new service. What we expect is for you to:
 
 1. Build an image for this codebase. This involves creating a `Dockerfile` in which you `COPY` the necessary source code. As well, you must ensure to install the node.js dependancies that the service requires on run-time.
-2. `Push` the resulting image to dockerhub or IBM container resgitry with the following name and tag: your-account/details:1
+2. `Push` the resulting image to dockerhub or IBM container registry with the following name and tag: your-account/details:1
 3. Deliver the new image to your openshift namespace, by using a `Deployment` (app: details-nodejs - as labels)
 4. Expose the new deployment as a `Service` with the name `details-nodejs`
 5. Save your artifacts (yamls, codebase, dockerfile) in a github repository
