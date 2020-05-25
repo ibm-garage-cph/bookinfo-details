@@ -65,6 +65,7 @@ ibmcloud cr login
 
 # Build image with a tag
 docker build --tag tagname:1.0.0 .
+docker build --tag de.icr.io/kmddk/bookinfo-details-mn     # <--- use a tag in this format. it will make things simpler
 
 # Run container interactively
 docker run -it tagname:1.0.0
