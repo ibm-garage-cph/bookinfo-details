@@ -36,9 +36,9 @@ app.get('/health', (req, res, next) => {
  }
 })
 
-app.get('/bad-health', (req, res, next) => {
+app.get('/simulate-problem', (req, res, next) => {
   health = false
-  res.json({ status: 'App health set to \'false\'. This should activate the liveness probe'})
+  res.json({ status: 'Health variable set to \'false\'. This should activate the liveness probe'})
   next()
 })
 ```
@@ -65,10 +65,10 @@ app.get('/bad-health', (req, res, next) => {
    Simulate the app health problem with `http://localhost:3000/simulate-problem`
    Check the `http://localhost:3000/health` again.
 
- 2. + Push image to container registry
+   Push image to container registry
  
    ```
-    docker tag  bookinfo-details-v2:2.0 de.icr.io/<namespace>/<id>-bookinfo-details-v2:2.0
+   docker tag  bookinfo-details-v2:2.0 de.icr.io/<namespace>/<id>-bookinfo-details-v2:2.0
 
    docker push de.icr.io/<namespace>/<id>-bookinfo-details-v2:2.0
    ```
@@ -86,7 +86,7 @@ app.get('/bad-health', (req, res, next) => {
           exec:
             command:
             - cat
-            - /tmp/healthy
+            - /app/healthy
           initialDelaySeconds: 5
           periodSeconds: 5
    ```
@@ -99,19 +99,23 @@ app.get('/bad-health', (req, res, next) => {
    ```
 5. Test the liveness probe. Access the `bookinfo-details` external URL (collect it with `oc get route`)
    ```sh
-   curl `http://<route_host>/health`
+   curl http://<route_host>/health
    ```
-   Check the status of the pod
+   Check the status of the pod:
+   
    ```
    oc get po
    ```
-   Simulate the health problem with:
+   Simulate the app health problem with:
+
    ```sh
-   curl `http://<route_host>/simulate-problem`
+   curl http://<route_host>/simulate-problem
    ```
    Check if pod has been restarted by the kubelet:
 
    ```sh
    oc describe po <pod-name>
    ```
-   Check the section Events of the output.
+   Check the section `Events` of the output.
+
+6. Check the definition of the readiness probe. Explain how it works and why it passed?
