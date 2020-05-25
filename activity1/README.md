@@ -21,6 +21,7 @@ You have been tasked with the containerisation of this brand-new service. What w
 2. `Push` the resulting image to dockerhub or IBM container resgitry with the following name and tag: your-account/details:1
 3. Deliver the new image to your openshift namespace, by using a `Deployment` (app: details-nodejs - as labels)
 4. Expose the new deployment as a `Service` with the name `details-nodejs`
+5. Save your artifacts (yamls, codebase, dockerfile) in a github repository
 
 ## Reference
 
