@@ -15,4 +15,4 @@ spec:
         name: registry-bookinfo-details
   params:
     - name: NAMESPACE
-      value: bookinfo-mn
+      value: bookinfo-<your-initials>
