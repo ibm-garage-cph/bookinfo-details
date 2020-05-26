@@ -2,6 +2,9 @@
 
 This activity is about creating your first OpenShift CI pipeline.
 
+Recommended: 
+- Install tekton cli - https://github.com/tektoncd/cli
+
 ## Problem
 
 You have been tasked with automating the build and release of the new details service. Below you have the instructions for re-using some existing pipeline artifacts.
@@ -64,7 +67,6 @@ You have been tasked with automating the build and release of the new details se
 8. If the pipeline is successful, check your dockerhub account to see that the image is there
 
 9. If the pipeline is successful, check your deployment of the bookinfo application 
-
 
 ## Reference
 
