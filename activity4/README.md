@@ -18,7 +18,7 @@ You have been tasked with automating the build and release of the new details se
    - Apply the resources on by one
 
    ```bash
-   oc apply -f 1_resources/git.yaml
+   oc apply -f 1_resources/git.yaml                 
    oc apply -f 1_resources/registry.yaml
    oc apply -f 1_resources/service-account.yaml
    ```
@@ -28,6 +28,7 @@ You have been tasked with automating the build and release of the new details se
     ```bash
    oc apply -f 2_tasks/task-test.yaml
    oc apply -f 2_tasks/task-build-push.yaml
+   oc apply -f 2_tasks/task-apply-manifest.yaml
    ```
 
     *The files named `taskrun-` can be used for testing the tasks individually. But for our purposes, we don't need to use them*
