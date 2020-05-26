@@ -19,7 +19,7 @@ The project also contains the artifacts neccessary for you to deploy it to your 
 You have been tasked with the containerisation of this brand-new service. What we expect is for you to:
 
 1. Build an image for this codebase. This involves creating a `Dockerfile` in which you `COPY` the necessary source code. As well, you must ensure to install the node.js dependancies that the service requires on run-time.
-2. `Push` the resulting image to dockerhub or IBM container registry with the following name and tag: your-account/details:1
+2. `Push` the resulting image to dockerhub or IBM container registry with the following name and tag: de.icr.io/kmddk/bookinfo-details-<initials>:1
 3. Deliver the new image to your openshift namespace, by using a `Deployment` (app: details-nodejs - as labels)
 4. Expose the new deployment as a `Service` with the name `details-nodejs`
 5. Save your artifacts (yamls, codebase, dockerfile) in a github repository
