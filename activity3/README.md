@@ -60,7 +60,6 @@ app.get('/simulate-problem', (req, res, next) => {
    ```
    Use curl or web browser and test microservice URLs:
    - `http://localhost:3000/health`
-   - `http://localhost:3000/ready`
    
    Simulate the app health problem with `http://localhost:3000/simulate-problem`
    Check the `http://localhost:3000/health` again.
@@ -93,7 +92,7 @@ app.get('/simulate-problem', (req, res, next) => {
 4. Re-deploy the deployment to your namespace
 
    ```bash
-   oc project bookinfo-xxx/activity3
+   oc project bookinfo-xxx
 
    oc apply -f openshift/deployment.yaml
    ```
