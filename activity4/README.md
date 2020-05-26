@@ -13,7 +13,7 @@ You have been tasked with automating the build and release of the new details se
 2. Apply the `PipelineResources` which you can find in the directory named `1_resources`
    - Create a secret using the command found in `secret.sh`. Make sure to replace the `PASSWORD` field before execution with an API key generated from IBM Cloud IAM.
      - To obtain an API key --> cloud.ibm.com > top right corner > Manage > Access (IAM) > API Keys (Left side menu) > Create an IBM Cloud API key > Name it > Create > Copy / Download
-   - Modify the `registry.yaml` file to include your docker username
+   - Modify the `registry.yaml` file to include your repository name
 
    - Apply the resources on by one
 
