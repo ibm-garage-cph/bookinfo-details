@@ -86,6 +86,10 @@ docker ps
 
 # List local images
 docker images
+
+# Push image to registry
+docker push tagname:1.0.0
+docker push de.icr.io/kmddk/bookinfo-details-<initials>:1
 ```
 
 ### Deployment resource
