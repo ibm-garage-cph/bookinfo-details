@@ -40,7 +40,7 @@ spec:
           cd ./$(inputs.params.TARGET_DIRECTORY)
           echo -----------------------------------
           echo Updaing manifests in $(inputs.params.manifest_dir) directory
-          sed -i "s|<IMAGE_NAME>|${NEW_IMAGE}|g" ./$(inputs.params.manifest_dir)/deployment.yaml
+          sed -i "s|image:.*$|image: ${NEW_IMAGE}|g" ./$(inputs.params.manifest_dir)/deployment.yaml
           echo -----------------------------------
           echo deployment.yaml
           cat ./$(inputs.params.manifest_dir)/deployment.yaml
